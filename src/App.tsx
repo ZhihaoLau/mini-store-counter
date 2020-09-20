@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext, useReducer } from "react";
+import "./App.css";
+import { initialState, reducer, StoreContext } from "./store";
+
+const Counter = () => {
+  const { state, dispatch } = useContext(StoreContext);
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({ type: "Subtract" })}>-</button>
+      <button onClick={() => dispatch({ type: "Add" })}>+</button>
+    </>
+  );
+};
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <StoreContext.Provider value={{ state, dispatch }}>
+        <Counter />
+      </StoreContext.Provider>
     </div>
   );
 }
